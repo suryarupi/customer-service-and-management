@@ -75,3 +75,92 @@ void showAllCustomers() {
     for (const auto& c : customerDatabase)
         c.display();
 }
+void searchCustomer() {
+    if (customerDatabase.empty()) {
+        cout << "No customers.\n";
+        return;
+    }
+    cout << "Search by:\n1. Name\n2. Phone\nChoice: ";
+    int choice;
+    cin >> choice;
+
+    string input;
+    bool found = false;
+
+    if (choice == 1) {
+        cout << "Enter name: ";
+        cin >> input;
+        for (const auto& c : customerDatabase)
+            if (c.getName() == input) {
+                c.display();
+                found = true;
+            }
+    } else if (choice == 2) {
+        cout << "Enter phone: ";
+        cin >> input;
+        for (const auto& c : customerDatabase)
+            if (c.getPhone() == input) {
+                c.display();
+                found = true;
+            }
+    }
+
+    if (!found) cout << "Customer not found.\n";
+}
+void updateCustomer() {
+    string phone;
+    cout << "Enter phone of customer to update: ";
+    cin >> phone;
+    bool found = false;
+
+    for (auto& c : customerDatabase) {
+        if (c.getPhone() == phone) {
+            cout << "Current details:\n";
+            c.display();
+            string newName, newPhone;
+            cout << "New name (or . to skip): ";
+            cin >> newName;
+            if (newName != ".") c.setName(newName);
+            cout << "New phone (or . to skip): ";
+            cin >> newPhone;
+            if (newPhone != ".") c.setPhone(newPhone);
+            cout << "Updated successfully.\n";
+            found = true;
+            break;
+        }
+    }
+    if (!found) cout << "Customer not found.\n";
+}
+void deleteCustomer() {
+    string phone;
+    cout << "Enter phone to delete: ";
+    cin >> phone;
+    auto it = remove_if(customerDatabase.begin(), customerDatabase.end(), [&](Customer c) {
+        return c.getPhone() == phone;
+    });
+    if (it != customerDatabase.end()) {
+        customerDatabase.erase(it, customerDatabase.end());
+        cout << "Deleted successfully.\n";
+    } else {
+        cout << "Customer not found.\n";
+    }
+}
+void saveToFile() {
+    ofstream out("customers.txt");
+    for (const auto& c : customerDatabase)
+        out << c << endl;
+    cout << "Database saved.\n";
+}
+
+void loadFromFile() {
+    ifstream in("customers.txt");
+    if (!in) {
+        cout << "No file found.\n";
+        return;
+    }
+    customerDatabase.clear();
+    Customer c;
+    while (in >> c)
+        customerDatabase.push_back(c);
+    cout << "Database loaded.\n";
+}
