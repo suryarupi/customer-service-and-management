@@ -164,3 +164,20 @@ void loadFromFile() {
         customerDatabase.push_back(c);
     cout << "Database loaded.\n";
 }
+void addVIPCustomer(string name, string phone, int arrivalTime, int priority) {
+    Customer c(name, phone, arrivalTime);
+    vipQueue.push({priority, c});
+    customerDatabase.push_back(c);
+    cout << "VIP Customer added.\n";
+}
+
+void serveVIPCustomer() {
+    if (vipQueue.empty()) {
+        cout << "No VIP customers.\n";
+        return;
+    }
+    Customer vip = vipQueue.top().second;
+    vipQueue.pop();
+    cout << "Serving VIP:\n";
+    vip.display();
+}
