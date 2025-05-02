@@ -181,3 +181,16 @@ void serveVIPCustomer() {
     cout << "Serving VIP:\n";
     vip.display();
 }
+void reportStats() {
+    cout << "Total Customers: " << customerDatabase.size() << endl;
+    cout << "VIP Customers: " << vipQueue.size() << endl;
+    cout << "Waiting Customers: " << waitingQueue.size() << endl;
+}
+bool adminLogin() {
+    string user, pass;
+    cout << "Username: ";
+    cin >> user;
+    cout << "Password: ";
+    cin >> pass;
+    return (user == "admin" && pass == "1234");
+}
