@@ -194,3 +194,53 @@ bool adminLogin() {
     cin >> pass;
     return (user == "admin" && pass == "1234");
 }
+int main() {
+    if (!adminLogin()) {
+        cout << "Login Failed. Exiting...\n";
+        return 0;
+    }
+
+    int choice;
+    loadFromFile(); // auto-load database
+
+    while (true) {
+        cout << "\n--- Customer Service System ---\n";
+        cout << "1. Add Customer\n2. Serve Customer\n3. Show All\n4. Sort by Time\n5. Sort by Name\n6. Search Customer\n";
+        cout << "7. Update Customer\n8. Delete Customer\n9. Save Database\n10. Add VIP Customer\n11. Serve VIP Customer\n12. View Statistics\n13. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            string name, phone;
+            int time;
+            cout << "Enter Name: "; cin >> name;
+            cout << "Enter Phone: "; cin >> phone;
+            cout << "Enter Arrival Time: "; cin >> time;
+            addCustomer(name, phone, time);
+        }
+        else if (choice == 2) serveCustomer();
+        else if (choice == 3) showAllCustomers();
+        else if (choice == 4) sortByTime();
+        else if (choice == 5) sortByName();
+        else if (choice == 6) searchCustomer();
+        else if (choice == 7) updateCustomer();
+        else if (choice == 8) deleteCustomer();
+        else if (choice == 9) saveToFile();
+        else if (choice == 10) {
+            string name, phone;
+            int time, priority;
+            cout << "Enter Name: "; cin >> name;
+            cout << "Enter Phone: "; cin >> phone;
+            cout << "Enter Time: "; cin >> time;
+            cout << "Enter Priority: "; cin >> priority;
+            addVIPCustomer(name, phone, time, priority);
+        }
+        else if (choice == 11) serveVIPCustomer();
+        else if (choice == 12) reportStats();
+        else if (choice == 13) break;
+        else cout << "Invalid choice.\n";
+    }
+
+    saveToFile(); // save on exit
+    return 0;
+}
